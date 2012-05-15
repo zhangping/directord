@@ -68,7 +68,7 @@ class Connection(object):
         logging.debug("{0}: closed".format(self))
 
 
-class EVServer(object):
+class EvServer(object):
 
     def __init__(self, address):
         self.sock = socket.socket()
@@ -124,5 +124,5 @@ class EVServer(object):
 
 
 if __name__ == "__main__":
-    server = EVServer(("127.0.0.1", 9876))
+    server = EvServer(("127.0.0.1", 9876))
     server.start()

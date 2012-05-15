@@ -2,13 +2,13 @@
 import logging
 import sys
 from daemon import *
-from ev import *
+from evserver import *
 
 class Server (Daemon):
         def run (self):
                 # Create the server
                 HOST, PORT = "192.168.1.13", 554
-                theserver = EVServer ((HOST, PORT))
+                theserver = EvServer ((HOST, PORT))
 
                 # Activate the server
                 theserver.start () 
