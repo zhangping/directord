@@ -4,7 +4,6 @@ import weakref
 import errno
 import logging
 import pyev
-from daemon import *
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -69,10 +68,9 @@ class Connection(object):
         logging.debug("{0}: closed".format(self))
 
 
-class Server(Daemon):
+class EVServer(object):
 
-    def __init__(self):
-        address = ("192.168.1.13", 554)
+    def __init__(self, address):
         self.sock = socket.socket()
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.sock.bind(address)
@@ -126,5 +124,5 @@ class Server(Daemon):
 
 
 if __name__ == "__main__":
-    server = Server("/var/run/director.pid")
+    server = EVServer(("127.0.0.1", 9876))
     server.start()

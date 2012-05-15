@@ -2,20 +2,20 @@
 import logging
 import sys
 from daemon import *
-from director import *
+from ev import *
 
 class Server (Daemon):
         def run (self):
                 # Create the server
-                HOST, PORT = "localhost", 554
-                theserver = SocketServer.TCPServer ((HOST, PORT), Director)
+                HOST, PORT = "192.168.1.13", 554
+                theserver = EVServer ((HOST, PORT))
 
                 # Activate the server
-                theserver.serve_forever () 
+                theserver.start () 
 
 if __name__ == "__main__":
 
-        logging.basicConfig(filename='/var/log/director.log',
+        logging.basicConfig (filename='/var/log/director.log',
                 format='%(asctime)s - %(module)s.%(funcName)s - %(levelname)s - %(message)s',
                 level=logging.DEBUG)
 
