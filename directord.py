@@ -15,14 +15,13 @@ class Server (Daemon):
 
 if __name__ == "__main__":
 
-        logging.basicConfig (filename='/var/log/director.log',
+        logging.basicConfig (filename='/var/log/directord.log',
                 format='%(asctime)s - %(module)s.%(funcName)s - %(levelname)s - %(message)s',
                 level=logging.DEBUG)
 
-        service = Server ("/var/run/director.pid")
+        service = Server ("/var/run/directord.pid")
         if len(sys.argv) == 2:
                 if 'start' == sys.argv[1]:
-                        sys.argv[1] = '8080'
                         service.start()
                 elif 'stop' == sys.argv[1]:
                         service.stop()
