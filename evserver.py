@@ -13,7 +13,7 @@ MethodNotAllowed = (
 MethodOption = (
 "RTSP/1.0 200 OK\r\n"
 "CSeq: 2\r\n"
-"Public: DESCRIBE, TEARDOWN\r\n\r\n"
+"Public: DESCRIBE\r\n\r\n"
 )
 
 MethodRedirect = (
