@@ -2,6 +2,7 @@
 
 # This file - rtspparser.py, is part of directord.
 
+import string
 import re
 import logging
 
@@ -46,14 +47,14 @@ class RtspParser (object):
                                         self.url = r.search (s).group (1)
                                 elif s.find ("CSeq") == 0:
                                         r = re.compile ("CSeq:.(\d+)")
-                                        self.CSeq = r.search (s).group (1)
+                                        self.CSeq = string.atoi (r.search (s).group (1))
                         return 0
                 elif a[0].find ("OPTIONS") ==0:
                         self.method = "OPTIONS"
                         for s in a:
                                 if s.find ("CSeq") == 0:
                                         r = re.compile ("CSeq:.(\d+)")
-                                        self.CSeq = r.search (s).group (1)
+                                        self.CSeq = string.atoi (r.search (s).group (1))
                         return 0
                 else: # unsupported method
                         self.errstr = "bad request, parse error"
@@ -63,11 +64,11 @@ class RtspParser (object):
 
 if __name__ == "__main__":
         #request = "DESCRIBE rtsp://192.168.1.13/x.ts RTSP/1.0\r\nCSeq: 13\r\nUser-Agent: LibVLC/2.0.1 (LIVE555 Streaming Media v2011.12.23)\r\nAccept: application/sdp\r\n"
-        request = "OPTIONS rtsp://192.168.1.13/x.ts RTSP/1.0\r\nCSeq: 1112\r\nUser-Agent: LibVLC/2.0.1 (LIVE555 Streaming Media v2011.12.23)"
-        #request = "DESCRIBE rtsp://192.168.1.13/x.ts RTSP/1.0\r\nCSeq: 3\r\nUser-Agent: LibVLC/2.0.1 (LIVE555 Streaming Media v2011.12.23)\r\nAccept: application/sdp\r\n\r\n"
+        #request = "OPTIONS rtsp://192.168.1.13/x.ts RTSP/1.0\r\nCSeq: 2\r\nUser-Agent: LibVLC/2.0.1 (LIVE555 Streaming Media v2011.12.23)"
+        request = "DESCRIBE rtsp://192.168.1.13/x.ts RTSP/1.0\r\nCSeq: 3\r\nUser-Agent: LibVLC/2.0.1 (LIVE555 Streaming Media v2011.12.23)\r\nAccept: application/sdp\r\n\r\n"
         rtsp = RtspParser (request)
         if rtsp.error:
                 print "Error: {}".format(rtsp.errstr)
         else:
                 print "url: %s" % rtsp.get_url()
-                print "CSeq: %s" % rtsp.get_CSeq()
+                print "CSeq: %d" % rtsp.get_CSeq()

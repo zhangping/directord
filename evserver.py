@@ -4,22 +4,23 @@ import weakref
 import errno
 import logging
 import pyev
+from rtspparser import *
 
 MethodNotAllowed = (
 "RTSP/1.0 405 Method Not Allowed\r\n"
-"CSeq: 2\r\n\r\n"
+"CSeq: %d\r\n\r\n"
 )
 
-MethodOption = (
+MethodOptions = (
 "RTSP/1.0 200 OK\r\n"
-"CSeq: 2\r\n"
+"CSeq: %d\r\n"
 "Public: DESCRIBE\r\n\r\n"
 )
 
 MethodRedirect = (
 "RTSP/1.0 302 Found\r\n"
 "Server: QTSS/6.0\r\n"
-"CSeq: 1\r\n"
+"CSeq: %d\r\n"
 "Connection: Close\r\n"
 "Location: %s\r\n\r\n"
 )
@@ -66,7 +67,22 @@ class Connection(object):
         try:
             if (self.buf.find("\r\n\r\n") >= 0):
                 logger.debug ("request found: %s" % self.buf)
-                request = self.handle_request ()
+                request = RtspParser (self.buf)
+                if request.error:
+                    logger.debug ("Bad request: {}".format (self.buf))
+                    response = MethodNotAllowed % request.get_CSeq ()
+                    self.sock.send (response)
+                else:
+                    if request.get_method () == "DESCRIBE":
+                        logger.debug ("DESCRIBE request received")
+                        response = MethodRedirect % (request.get_CSeq (), request.get_url ())
+                        self.sock.send (response)
+                        self.buf = self.buf[len(self.buf):]
+                    elif request.get_method () == "OPTIONS":
+                        logger.debug ("OPTIONS request received")
+                        response = MethodOptions % request.get_CSeq ()
+                        self.sock.send (response)
+                        self.buf = self.buf[len(self.buf):]
                 if not self.buf:
                     self.reset(pyev.EV_READ)
             else:
@@ -84,7 +100,7 @@ class Connection(object):
             self.buf = self.buf[len(self.buf):]
         elif (self.buf.find("OPTION") == 0):
             logger.debug ("option")
-            self.sock.send(MethodOption)
+            self.sock.send(MethodOptions)
             self.buf = self.buf[len(self.buf):]
         else:
             self.sock.send(MethodNotAllowed)
@@ -158,5 +174,5 @@ class EvServer(object):
 
 
 if __name__ == "__main__":
-    server = EvServer(("127.0.0.1", 9876))
+    server = EvServer(("192.168.1.13", 554))
     server.start()
