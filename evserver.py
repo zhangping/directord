@@ -5,6 +5,25 @@ import errno
 import logging
 import pyev
 
+MethodNotAllowed = (
+"RTSP/1.0 405 Method Not Allowed\r\n"
+"CSeq: 2\r\n\r\n"
+)
+
+MethodOption = (
+"RTSP/1.0 200 OK\r\n"
+"CSeq: 2\r\n"
+"Public: DESCRIBE, TEARDOWN\r\n\r\n"
+)
+
+MethodRedirect = (
+"RTSP/1.0 302 Found\r\n"
+"Server: QTSS/6.0\r\n"
+"CSeq: 1\r\n"
+"Connection: Close\r\n"
+"Location: %s\r\n\r\n"
+)
+
 STOPSIGNALS = (signal.SIGINT, signal.SIGTERM)
 NONBLOCKING = (errno.EAGAIN, errno.EWOULDBLOCK)
 logger = logging.getLogger ()
@@ -37,6 +56,7 @@ class Connection(object):
             if err.args[0] not in NONBLOCKING:
                 self.handle_error("error reading from {0}".format(self.sock))
         if buf:
+            logger.debug ("Got request")
             self.buf += buf
             self.reset(pyev.EV_READ | pyev.EV_WRITE)
         else:
@@ -44,15 +64,31 @@ class Connection(object):
 
     def handle_write(self):
         try:
-            sent = self.sock.send(self.buf)
+            if (self.buf.find("\r\n\r\n") >= 0):
+                logger.debug ("request found: %s" % self.buf)
+                request = self.handle_request ()
+                if not self.buf:
+                    self.reset(pyev.EV_READ)
+            else:
+                self.buf = self.buf[len(self.buf):]
+                self.reset(pyev.EV_READ)
         except socket.error as err:
             if err.args[0] not in NONBLOCKING:
                 self.handle_error("error writing to {0}".format(self.sock))
-        else :
-            self.buf = self.buf[sent:]
-            if not self.buf:
-                self.reset(pyev.EV_READ)
 
+    def handle_request(self):
+        logger.debug ("process request: {}".format(self.buf))
+        if (self.buf.find("DESCRIBE") == 0):
+            logger.debug ("describe")
+            self.sock.send(MethodRedirect)
+            self.buf = self.buf[len(self.buf):]
+        elif (self.buf.find("OPTION") == 0):
+            logger.debug ("option")
+            self.sock.send(MethodOption)
+            self.buf = self.buf[len(self.buf):]
+        else:
+            self.sock.send(MethodNotAllowed)
+         
     def io_cb(self, watcher, revents):
         if revents & pyev.EV_READ:
             self.handle_read()
