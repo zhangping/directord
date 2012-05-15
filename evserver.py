@@ -92,19 +92,6 @@ class Connection(object):
             if err.args[0] not in NONBLOCKING:
                 self.handle_error("error writing to {0}".format(self.sock))
 
-    def handle_request(self):
-        logger.debug ("process request: {}".format(self.buf))
-        if (self.buf.find("DESCRIBE") == 0):
-            logger.debug ("describe")
-            self.sock.send(MethodRedirect)
-            self.buf = self.buf[len(self.buf):]
-        elif (self.buf.find("OPTION") == 0):
-            logger.debug ("option")
-            self.sock.send(MethodOptions)
-            self.buf = self.buf[len(self.buf):]
-        else:
-            self.sock.send(MethodNotAllowed)
-         
     def io_cb(self, watcher, revents):
         if revents & pyev.EV_READ:
             self.handle_read()
