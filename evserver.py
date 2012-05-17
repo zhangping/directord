@@ -65,7 +65,7 @@ class Connection(object):
 
         def handle_write(self):
                 try:
-                        if (self.buf.find("\r\n\r\n") >= 0):
+                        if (self.buf.find("\r\n\r\n") >= 0): # whole request received
                                 logger.debug ("request found: %s" % self.buf)
                                 request = RtspParser (self.buf)
                                 if request.error:
@@ -86,7 +86,7 @@ class Connection(object):
                                                 self.buf = self.buf[len(self.buf):]
                                 if not self.buf:
                                         self.reset(pyev.EV_READ)
-                        else:
+                        else: # should read more
                                 self.reset(pyev.EV_READ)
                 except socket.error as err:
                         if err.args[0] not in NONBLOCKING:
