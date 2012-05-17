@@ -1,8 +1,10 @@
 
 import logging
+import logging.config
 import sys
 from daemon import *
 from evserver import *
+from logconfig import *
 
 class Server (Daemon):
         def run (self):
@@ -15,13 +17,18 @@ class Server (Daemon):
 
 if __name__ == "__main__":
 
+        """
         logging.basicConfig (filename='/var/log/directord.log',
                 format='%(asctime)s - %(module)s.%(funcName)s - %(levelname)s - %(message)s',
                 level=logging.DEBUG)
+        """
 
         service = Server ("/var/run/directord.pid")
         if len(sys.argv) == 2:
                 if 'start' == sys.argv[1]:
+                        logging.config.dictConfig (LOG_CONFIG)
+                        logger = logging.getLogger (__name__)
+                        logger.debug ("hhhhhhhhhhhhhhhhhhhhhh")
                         service.start()
                 elif 'stop' == sys.argv[1]:
                         service.stop()
