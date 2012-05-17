@@ -57,7 +57,7 @@ class Connection(object):
                         if err.args[0] not in NONBLOCKING:
                                 self.handle_error("error reading from {0}".format(self.sock))
                 if buf:
-                        logger.debug ("Got request")
+                        logger.debug ("Got request {}".format (buf))
                         self.buf += buf
                         self.reset(pyev.EV_READ | pyev.EV_WRITE)
                 else:
@@ -87,7 +87,6 @@ class Connection(object):
                                 if not self.buf:
                                         self.reset(pyev.EV_READ)
                         else:
-                                self.buf = self.buf[len(self.buf):]
                                 self.reset(pyev.EV_READ)
                 except socket.error as err:
                         if err.args[0] not in NONBLOCKING:
