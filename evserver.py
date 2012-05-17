@@ -28,6 +28,7 @@ MethodRedirect = (
 STOPSIGNALS = (signal.SIGINT, signal.SIGTERM)
 NONBLOCKING = (errno.EAGAIN, errno.EWOULDBLOCK)
 logger = logging.getLogger ()
+accesslogger = logging.getLogger ('access')
 
 class Connection(object):
 
@@ -75,6 +76,7 @@ class Connection(object):
                                         if request.get_method () == "DESCRIBE":
                                                 logger.debug ("DESCRIBE request received")
                                                 response = MethodRedirect % (request.get_CSeq (), request.get_url ())
+                                                accesslogger.info (request.get_url ())
                                                 self.sock.send (response)
                                                 self.buf = self.buf[len(self.buf):]
                                         elif request.get_method () == "OPTIONS":

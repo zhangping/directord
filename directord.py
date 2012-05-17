@@ -27,8 +27,7 @@ if __name__ == "__main__":
         if len(sys.argv) == 2:
                 if 'start' == sys.argv[1]:
                         logging.config.dictConfig (LOG_CONFIG)
-                        logger = logging.getLogger (__name__)
-                        logger.debug ("hhhhhhhhhhhhhhhhhhhhhh")
+                        logger = logging.getLogger ()
                         service.start()
                 elif 'stop' == sys.argv[1]:
                         service.stop()
