@@ -92,7 +92,8 @@ class Connection(object):
                                                         self.close ()
                                                 else:
                                                         location = "rtsp://%s/%s" % (request.get_host (), request.get_medianame ())
-                                                        accesslogger.info ("route success {}".format(request.get_url ()))
+                                                        logger.debug ("route success {}".format(request.get_url ()))
+                                                        accesslogger.info (request.get_url ())
                                                         response = MethodRedirect % (request.get_CSeq (), location)
                                                         self.sock.send (response)
                                                         self.buf = self.buf[len(self.buf):]
