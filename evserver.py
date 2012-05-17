@@ -5,6 +5,7 @@ import errno
 import logging
 import pyev
 from rtspparser import *
+from route import *
 
 MethodNotAllowed = (
 "RTSP/1.0 405 Method Not Allowed\r\n"
@@ -19,10 +20,17 @@ MethodOptions = (
 
 MethodRedirect = (
 "RTSP/1.0 302 Found\r\n"
-"Server: QTSS/6.0\r\n"
+"Server: Directord/1.0\r\n"
 "CSeq: %d\r\n"
 "Connection: Close\r\n"
 "Location: %s\r\n\r\n"
+)
+
+FileNotFound = (
+"RTSP/1.0 404 Not Found\r\n"
+"Server: Directord/1.0\r\n"
+"Cseq: %d\r\n"
+"Connection: Close\r\n\r\n"
 )
 
 STOPSIGNALS = (signal.SIGINT, signal.SIGTERM)
@@ -66,21 +74,30 @@ class Connection(object):
         def handle_write(self):
                 try:
                         if (self.buf.find("\r\n\r\n") >= 0): # whole request received
-                                logger.debug ("request found: %s" % self.buf)
+                                logger.debug ("whole request got: %s" % self.buf)
                                 request = RtspParser (self.buf)
                                 if request.error:
                                         logger.debug ("Bad request: {}".format (self.buf))
                                         response = MethodNotAllowed % request.get_CSeq ()
                                         self.sock.send (response)
+                                        self.close ()
                                 else:
                                         if request.get_method () == "DESCRIBE":
-                                                logger.debug ("DESCRIBE request received")
-                                                response = MethodRedirect % (request.get_CSeq (), request.get_url ())
-                                                accesslogger.info (request.get_url ())
-                                                self.sock.send (response)
-                                                self.buf = self.buf[len(self.buf):]
+                                                logger.debug ("It is a DESCRIBE request")
+                                                destination = route (request.get_medianame ())
+                                                if destination is None:
+                                                        logger.debug ("File not found : %s" % request.get_url ())
+                                                        response = FileNotFound % request.get_CSeq ()
+                                                        self.sock.send (response)
+                                                        self.close ()
+                                                else:
+                                                        location = "rtsp://%s/%s" % (request.get_host (), request.get_medianame ())
+                                                        accesslogger.info ("route success {}".format(request.get_url ()))
+                                                        response = MethodRedirect % (request.get_CSeq (), location)
+                                                        self.sock.send (response)
+                                                        self.buf = self.buf[len(self.buf):]
                                         elif request.get_method () == "OPTIONS":
-                                                logger.debug ("OPTIONS request received")
+                                                logger.debug ("It is a OPTIONS request")
                                                 response = MethodOptions % request.get_CSeq ()
                                                 self.sock.send (response)
                                                 self.buf = self.buf[len(self.buf):]
