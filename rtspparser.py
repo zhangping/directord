@@ -57,9 +57,9 @@ class RtspParser (object):
                                         self.CSeq = string.atoi (r.search (s).group (1))
                         return 0
                 else: # unsupported method
-                        self.errstr = "bad request, parse error"
+                        self.errstr = "parse error"
                         logger.debug ("bad request {}".format(self.errstr))
-                        self.error = 1 # unsupported method
+                        self.error = True # unsupported method
                         return -1
 
 if __name__ == "__main__":
