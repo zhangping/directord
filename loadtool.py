@@ -18,10 +18,10 @@ def sendrequest (medianame):
         s.connect((SERVER, PORT))
         request = DescribeRequest % (SERVER, medianame)
         print "Request {}".format (request)
-        s.sendall(medianame)
+        s.sendall(request)
         data = s.recv(1024)
         s.close()
-        print 'Received', repr(data)
+        print 'Received', data
 
 for l in fileinput.input ("vss.log"):
         if re.match ("^#", l):
