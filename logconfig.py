@@ -22,7 +22,7 @@ LOG_CONFIG = {
                         'stream': 'ext://sys.stdout',
                 },
 	        'directord': {
-                        'level': 'DEBUG',
+                        'level': 'INFO',
                         'class': 'logging.handlers.RotatingFileHandler',
                         'formatter': 'standard',
                         'filename': '/var/log/directord.log',
@@ -37,7 +37,7 @@ LOG_CONFIG = {
                         'interval': 5,
                         'formatter': 'accessrecord',
                         'filename': '/var/log/access.log',
-                        'backupCount': 6,
+                        'backupCount': 12*24*7, # 7 days
                 },
         },
         'loggers': {

@@ -14,7 +14,7 @@ def route (medianame):
         if re.match ("^41243\S+", medianame): # CCTV-1 find
                 return "192.168.1.15"
 
-        if re.match ("^42142\S+", medianame): # CCTV-2 find
+        if re.match ("^41242\S+", medianame): # CCTV-2 find
                 return "192.168.1.15"
 
         if re.match ("^41241\S+", medianame): # CCTV-3 find

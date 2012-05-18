@@ -77,7 +77,7 @@ class Connection(object):
                                 logger.debug ("whole request got: %s" % self.buf)
                                 request = RtspParser (self.buf)
                                 if request.error:
-                                        logger.debug ("Bad request: {}".format (self.buf))
+                                        logger.warning ("Bad request: {}".format (self.buf))
                                         response = MethodNotAllowed % request.get_CSeq ()
                                         self.sock.send (response)
                                         self.close ()
@@ -86,7 +86,7 @@ class Connection(object):
                                                 logger.debug ("It is a DESCRIBE request")
                                                 destination = route (request.get_medianame ())
                                                 if destination is None:
-                                                        logger.debug ("File not found : %s" % request.get_url ())
+                                                        logger.warning ("File not found : %s" % request.get_url ())
                                                         response = FileNotFound % request.get_CSeq ()
                                                         self.sock.send (response)
                                                         self.close ()
