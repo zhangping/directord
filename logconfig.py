@@ -14,11 +14,6 @@ LOG_CONFIG = {
                         'format': '%(asctime)s %(message)s'
                 }
         },
-        'filters': {
-                'root': {
-                'name': 'root',
-                }
-        },
         'handlers': {
                 'console': {
                         'level': 'DEBUG',
@@ -48,13 +43,13 @@ LOG_CONFIG = {
         'loggers': {
                 'access': {
                         'handlers': ['access'],
-                        'level': 'DEBUG'
+                        'level': 'DEBUG',
+                        'propagate': False
                 }
         },
         'root': {
                 'handlers': ['directord'],
                 'level': 'DEBUG',
-                'filters': ['root']
         }
 }
 
