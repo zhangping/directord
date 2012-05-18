@@ -1,1 +1,62 @@
 directord for wujin
+zhangping@rainbow:/var/log$ grep 41243 access.log | wc
+    372    1488   21204
+zhangping@rainbow:/var/log$ grep 42142 access.log | wc
+      0       0       0
+zhangping@rainbow:/var/log$ grep 41241 access.log | wc
+     82     328    4674
+zhangping@rainbow:/var/log$ grep 41240 access.log | wc
+     76     304    4332
+zhangping@rainbow:/var/log$ grep 41239 access.log | wc
+    176     704   10032
+zhangping@rainbow:/var/log$ grep 41238 access.log | wc
+   1834    7336  104538
+zhangping@rainbow:/var/log$ grep 41237 access.log | wc
+    297    1188   16929
+zhangping@rainbow:/var/log$ grep 41236 access.log | wc
+     87     348    4959
+zhangping@rainbow:/var/log$ grep 41235 access.log | wc
+     56     224    3192
+zhangping@rainbow:/var/log$ grep 41234 access.log | wc
+    608    2432   34656
+zhangping@rainbow:/var/log$ grep 41233 access.log | wc
+   1003    4012   57171
+zhangping@rainbow:/var/log$ grep 41232 access.log | wc
+    538    2152   30666
+zhangping@rainbow:/var/log$ grep 41231 access.log | wc
+    143     572    8151
+zhangping@rainbow:/var/log$ grep 41230 access.log | wc
+    719    2876   40983
+zhangping@rainbow:/var/log$ grep 41229 access.log | wc
+    114     456    6498
+zhangping@rainbow:/var/log$ grep 41228 access.log | wc
+     65     260    3705
+zhangping@rainbow:/var/log$ grep 41227 access.log | wc
+    183     732   10431
+zhangping@rainbow:/var/log$ grep 41226 access.log | wc
+     51     204    2907
+zhangping@rainbow:/var/log$ grep 41225 access.log | wc
+     43     172    2451
+zhangping@rainbow:/var/log$ grep 41224 access.log | wc
+     65     260    3705
+zhangping@rainbow:/var/log$ grep 41223 access.log | wc
+    820    3280   46740
+zhangping@rainbow:/var/log$ grep 41222 access.log | wc
+    379    1516   21603
+zhangping@rainbow:/var/log$ grep 41221 access.log | wc
+     73     292    4161
+zhangping@rainbow:/var/log$ grep 41220 access.log | wc
+     94     376    5358
+zhangping@rainbow:/var/log$ grep 41219 access.log | wc
+    102     408    5814
+zhangping@rainbow:/var/log$ grep 41218 access.log | wc
+    328    1312   18696
+zhangping@rainbow:/var/log$ grep 41217 access.log | wc
+    242     968   13794
+zhangping@rainbow:/var/log$ grep 41216 access.log | wc
+     81     324    4617
+zhangping@rainbow:/var/log$ grep 41215 access.log | wc
+     50     200    2850
+zhangping@rainbow:/var/log$ grep 41214 access.log | wc
+    226     904   12882
+
