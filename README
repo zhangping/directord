@@ -1,4 +1,6 @@
 directord for wujin
+zhangping@rainbow:/var/log$ grep VOD access.log | wc
+    273    1092   16653
 zhangping@rainbow:/var/log$ grep 41243 access.log | wc
     372    1488   21204
 zhangping@rainbow:/var/log$ grep 42142 access.log | wc
