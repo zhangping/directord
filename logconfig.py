@@ -8,10 +8,15 @@ LOG_CONFIG = {
         'disable_existing_loggers': False,
         'formatters': {
                 'standard': {
-                        'format': '%(asctime)s - %(module)s.%(funcName)s - %(levelname)s - %(message)s'
+                        'format': '%(asctime)s %(name)s %(module)s.%(funcName)s %(levelname)s %(message)s'
                 },
                 'accessrecord': {
-                        'format': '%(asctime)s - %(message)s'
+                        'format': '%(asctime)s %(message)s'
+                }
+        },
+        'filters': {
+                'root': {
+                'name': 'root',
                 }
         },
         'handlers': {
@@ -48,7 +53,8 @@ LOG_CONFIG = {
         },
         'root': {
                 'handlers': ['directord'],
-                'level': 'DEBUG'
+                'level': 'DEBUG',
+                'filters': ['root']
         }
 }
 
