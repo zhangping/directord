@@ -95,7 +95,7 @@ def route (medianame):
         if re.match ("^41216\S+", medianame): # Jin Bao Ti Yu find
                 return "192.168.1.15"
 
-        if re.match ("^412156\S+", medianame): # Feng Yun Zu Qiu find
+        if re.match ("^41215\S+", medianame): # Feng Yun Zu Qiu find
                 return "192.168.1.15"
 
         if re.match ("^41214\S+", medianame): # 4 Hai Diao Yu find
