@@ -2,6 +2,9 @@
 import fileinput
 import re
 import socket
+import glob
+import time
+import random
 
 SERVER = '192.168.1.13'    # The directord server
 PORT = 554
@@ -23,10 +26,17 @@ def sendrequest (medianame):
         s.close()
         print 'Received', data
 
-for l in fileinput.input ("vss.log"):
-        if re.match ("^#", l):
-                continue
+def loadtest (filename):
+        for l in fileinput.input (filename):
+                if re.match ("^#", l):
+                        continue
 
-        r = re.compile ("\S+ \/(\S+\.ts)")
-        sendrequest (r.search (l).group (1))
+                r = re.compile ("\S+ \/(\S+\.ts)")
+                sendrequest (r.search (l).group (1))
+                time.sleep (random.choice((0.01, 0.012, 0.013, 0.001, 0.015, 0.05, 0.024, 0.19, 0.0081, 0.04)))
                 
+fs = glob.glob ("Streaming*.log")
+while True:
+        print "another circle"
+        for f in fs:
+                loadtest(f)
