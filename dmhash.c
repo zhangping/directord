@@ -109,7 +109,7 @@ method_dmhash (PyObject *self, PyObject *args)
         }
         dm_round (DM_FULLROUNDS, &array[0], &h0, &h1);
 
-        return Py_BuildValue ("i", h0 ^ h1);
+        return Py_BuildValue ("I", h0 ^ h1);
 }
 
 static PyMethodDef DmHashMethods[] = {
@@ -120,5 +120,5 @@ static PyMethodDef DmHashMethods[] = {
 PyMODINIT_FUNC
 initdmhash (void)
 {
-    (void) Py_InitModule("dmhash", DmHashMethods);
+        (void) Py_InitModule("dmhash", DmHashMethods);
 }
