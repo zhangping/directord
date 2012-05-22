@@ -1,3 +1,18 @@
+STB redirect packet:
+
+Request ---->
+DESCRIBE rtsp://10.49.34.182/41243t1205220034.ts?uuid=89415826&stbid=11019513125004270&starttime=0&endt=19&flag=0&pay=0&aut=1&returnUrl=linkinfo.action?tc=&ec=SHZB2377074&isp=N&uuid=89415826 RTSP/1.0
+CSeq: 1
+Accept: application/sdp
+User-Agent: DVN-IPQAM RTSP 1.0
+
+Response---->
+RTSP/1.0 302 Found
+Server: Directord/1.0
+CSeq: 1
+Connection: Close
+Location: rtsp://10.49.34.68/41243t1205220034.ts?uuid=89415826&stbid=11019513125004270&starttime=0&endt=19&flag=0&pay=0&aut=1&returnUrl=linkinfo.action?tc=&ec=SHZB2377074&isp=N&uuid=89415826
+
 directord for wujin
 zhangping@rainbow:/var/log$ grep VOD access.log | wc
     273    1092   16653
