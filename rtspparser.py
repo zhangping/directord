@@ -47,7 +47,7 @@ class RtspParser (object):
                                         try:
                                                 r = re.compile ("DESCRIBE (\S+) RTSP/1.0")
                                                 self.url = r.search (s).group (1)
-                                                r = re.compile ("rtsp://(\S+)/(\S+\.ts)")
+                                                r = re.compile ("rtsp://(\S+)/(\S+)")
                                                 self.host = r.search (self.url).group (1)
                                                 self.medianame = r.search (self.url).group (2)
                                         except:
