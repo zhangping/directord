@@ -39,7 +39,12 @@ class RtspParser (object):
                 return self.medianame
 
         def parse (self, buf):
-                a = re.split ("\r\n", buf)
+                if buf.find ("\r\n") > 0:
+                        a = re.split ("\r\n", buf)
+                elif buf.find ("\n") > 0:
+                        a = re.split ("\n", buf)
+                elif buf.find ("\r") > 0:
+                        a = re.split ("\r", buf)
                 if a[0].find ("DESCRIBE") == 0:
                         self.method = "DESCRIBE"
                         for s in a:
@@ -82,7 +87,9 @@ class RtspParser (object):
                         return -1
 
 if __name__ == "__main__":
-        request = "DESCRIBE rtsp://192.168.1.13/x.ts RTSP/1.0\r\nCSeq: 13\r\nUser-Agent: LibVLC/2.0.1 (LIVE555 Streaming Media v2011.12.23)\r\nAccept: application/sdp\r\n"
+        #request = "DESCRIBE rtsp://192.168.1.13/x.ts RTSP/1.0\r\nCSeq: 13\r\nUser-Agent: LibVLC/2.0.1 (LIVE555 Streaming Media v2011.12.23)\r\nAccept: application/sdp\r\n"
+        request = "DESCRIBE rtsp://192.168.1.13/x.ts RTSP/1.0\nCSeq: 13\nUser-Agent: LibVLC/2.0.1 (LIVE555 Streaming Media v2011.12.23)\nAccept: application/sdp\n\n"
+        #request = "DESCRIBE rtsp://192.168.1.13/x.ts RTSP/1.0\rCSeq: 13\rUser-Agent: LibVLC/2.0.1 (LIVE555 Streaming Media v2011.12.23)\rAccept: application/sdp\r\r"
         #request = "OPTIONS rtsp://192.168.1.13/x.ts RTSP/1.0\r\nCSeq: 2\r\nUser-Agent: LibVLC/2.0.1 (LIVE555 Streaming Media v2011.12.23)"
         #request = "DESCRIBE rtsp://192.168.1.13/VODC2011011613583204.ts?ServiceGroup=1 RTSP/1.0\r\nCSeq: 3\r\nUser-Agent: LibVLC/2.0.1 (LIVE555 Streaming Media v2011.12.23)\r\nAccept: application/sdp\r\n\r\n"
         rtsp = RtspParser (request)

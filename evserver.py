@@ -73,7 +73,8 @@ class Connection(object):
 
         def handle_write(self):
                 try:
-                        if (self.buf.find("\r\n\r\n") >= 0): # whole request received
+                        if ((self.buf.find("\r\n\r\n") >= 0) or (self.buf.find("\n\n") >= 0) or (self.buf.find("\r\r") >= 0)):
+                                # whole request received
                                 logger.debug ("whole request got: %s" % self.buf)
                                 request = RtspParser (self.buf)
                                 if request.error:
