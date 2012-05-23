@@ -159,22 +159,31 @@ import glob
 import fileinput
 import string
 import logging
+import logging.handlers
 import shutil
 
 LOCAL = "/usr/local/movies/"
 PULLD = "/usr/local/movies/pulld/"
 REMOTE = "/usr/local/movies/remote"
 
-def getvssprocpath ():
+def GetVssProcPath ():
         procpath = []
         for l in fileinput.input ("/var/run/VideoStreamingServer.pid"):
                 procpath.append ("/proc/%s/fd" % l.strip ())
         return procpath
 
+def GetLogger():
+        logger = logging.getLogger()
+        handler = logging.handlers.RotatingFileHandler("/var/log/pull.log", 'a', 200, 90)
+        formatter = logging.Formatter('[%(asctime)s %(message)s')
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+        logger.setLevel(logging.DEBUG)
+        return logger
+
 if __name__ == '__main__':
-        logging.basicConfig (format='%(asctime)s %(message)s', filename='/var/log/pull.log',level=logging.DEBUG)
-        logger = logging.getLogger ()
-        procpath = getvssprocpath ()
+        logger = GetLogger ()
+        procpath = GetVssProcPath ()
         for path in procpath:
                 # check remot open medias
                 remotemedia = glob.glob ("%s/*" % path)
