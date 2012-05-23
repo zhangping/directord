@@ -153,3 +153,43 @@
 # remove "old" movies at midnight.
 # old VOD is the media have not been access for many days.
 # old recorded tv program is the media recorded 5 days ago 
+
+import os
+import glob
+import fileinput
+import string
+import logging
+import shutil
+
+LOCAL = "/usr/local/movies/"
+PULLD = "/usr/local/movies/pulld/"
+REMOTE = "/usr/local/movies/remote"
+
+def getvssprocpath ():
+        procpath = []
+        for l in fileinput.input ("/var/run/VideoStreamingServer.pid"):
+                procpath.append ("/proc/%s/fd" % l.strip ())
+        return procpath
+
+if __name__ == '__main__':
+        logging.basicConfig (format='%(asctime)s %(message)s', filename='/var/log/pull.log',level=logging.DEBUG)
+        logger = logging.getLogger ()
+        procpath = getvssprocpath ()
+        for path in procpath:
+                # check remot open medias
+                remotemedia = glob.glob ("%s/*" % path)
+                for f in remotemedia:
+                        if string.find (os.path.realpath (f), REMOTE) == 0:
+                                if glob.glob ("%s%s" % (LOCAL, (os.path.realpath (f)[25:]))):
+                                        # the media exist in local storage, bypass
+                                        continue
+                                if glob.glob ("%s%s" % (PULLD, (os.path.realpath (f)[25:]))):
+                                        # have pulled to pulld, wait move to local
+                                        continue
+                                shutil.copy (os.path.realpath (f), PULLD)
+                                logger.info("pull %s" % os.path.realpath (f))
+
+                # move from pulld to /usr/local/movies
+                pullmedia = glob.glob ("%s*" % PULLD)
+                for f in pullmedia:
+                        shutil.move (f, LOCAL)

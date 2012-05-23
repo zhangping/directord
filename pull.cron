@@ -1,0 +1,4 @@
+#!/bin/sh
+
+test -x /root/pull.py || exit 0
+/usr/bin/python /root/pull.py
