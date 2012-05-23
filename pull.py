@@ -174,7 +174,8 @@ def GetVssProcPath ():
 
 def GetLogger():
         logger = logging.getLogger()
-        handler = logging.handlers.RotatingFileHandler("/var/log/pull.log", 'a', 200, 90)
+        # 1M log file, back count 10
+        handler = logging.handlers.RotatingFileHandler("/var/log/pull.log", 'a', 1024000, 10)
         formatter = logging.Formatter('[%(asctime)s %(message)s')
         handler.setFormatter(formatter)
         logger.addHandler(handler)
