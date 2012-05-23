@@ -6,7 +6,7 @@ import re
 import random
 
 def dispatchvod (medianame):
-        return (("10.49.34.67", "10.49.34.68", "10.49.34.69", "10.49.34.70", "10.49.34.71"))
+        return random.choice(("10.49.34.67", "10.49.34.68", "10.49.34.69", "10.49.34.70", "10.49.34.71"))
 
 def route (medianame):
         if re.match ("^VOD\S+", medianame): # VOD find
