@@ -188,15 +188,16 @@ if __name__ == '__main__':
                 # check remot open medias
                 remotemedia = glob.glob ("%s/*" % path)
                 for f in remotemedia:
-                        if string.find (os.path.realpath (f), REMOTE) == 0:
-                                if glob.glob ("%s%s" % (LOCAL, (os.path.realpath (f)[25:]))):
+                        realf = os.path.realpath (f)
+                        if string.find (realf, REMOTE) == 0:
+                                if glob.glob ("%s%s" % (LOCAL, (realf[25:]))):
                                         # the media exist in local storage, bypass
                                         continue
-                                if glob.glob ("%s%s" % (PULLD, (os.path.realpath (f)[25:]))):
+                                if glob.glob ("%s%s" % (PULLD, (realf[25:]))):
                                         # have pulled to pulld, wait move to local
                                         continue
-                                shutil.copy (os.path.realpath (f), PULLD)
-                                logger.info("pull %s" % os.path.realpath (f))
+                                shutil.copy (realf, PULLD)
+                                logger.info("pull %s" % realf)
 
                 # move from pulld to /usr/local/movies
                 pullmedia = glob.glob ("%s*" % PULLD)
