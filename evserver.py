@@ -95,7 +95,7 @@ class Connection(object):
                                                         location = "rtsp://%s/%s" % (destination, request.get_medianame ())
                                                         response = MethodRedirect % (request.get_CSeq (), location)
                                                         self.sock.send (response)
-                                                        accesslogger.info ("\r\nrequst: %s\r\nresponse: %s" % (self.buf, response))
+                                                        accesslogger.info ("\r\nREMOTE\r\n%s\r\nREQUEST\r\n%s\r\nRESPONSE\r\n%s" % (self.sock.getpeername (), self.buf, response))
                                                         self.buf = self.buf[len(self.buf):]
                                         elif request.get_method () == "OPTIONS":
                                                 logger.debug ("It is a OPTIONS request")
