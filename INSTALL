@@ -2,5 +2,6 @@ pull
 --------------------
 
 copy pull.py into /root
-copy pull.cron to /etc/cron.hourly
 mkdir -p /usr/local/movies/pulld
+run "crontab -e" add follow line:
+*/10 * * * * /usr/bin/python /root/pull.py
