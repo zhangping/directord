@@ -1,0 +1,5 @@
+pull
+--------------------
+
+copy pull.py into /root
+copy pull.cron to /etc/cron.hourly
