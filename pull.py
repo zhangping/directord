@@ -161,6 +161,8 @@ import string
 import logging
 import logging.handlers
 import shutil
+import stat
+import time
 
 LOCAL = "/usr/local/movies/"
 PULLD = "/usr/local/movies/pulld/"
@@ -185,6 +187,7 @@ def GetLogger():
 if __name__ == '__main__':
         logger = GetLogger ()
         procpath = GetVssProcPath ()
+        ######### pull
         for path in procpath:
                 # check remot open medias
                 remotemedia = glob.glob ("%s/*" % path)
@@ -204,3 +207,12 @@ if __name__ == '__main__':
                 pullmedia = glob.glob ("%s*" % PULLD)
                 for f in pullmedia:
                         shutil.move (f, LOCAL)
+
+        ######### remove tv program too older and VOD that is unpopular
+        media = glob.glob ("/usr/local/movies/?????t*")
+        for f in media:
+                # 86400 = 3600(seconds) * 24(hours)
+                if os.stat(f)[stat.ST_ATIME] + 86400*7 < time.time ():
+                        age = (time.time() - os.stat(f)[stat.ST_ATIME])/3600
+                        os.remove(f)
+                        logger.info("age: %s; remove %s" % (age, f))
