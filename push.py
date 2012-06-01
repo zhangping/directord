@@ -1,4 +1,5 @@
 
+import os
 import glob
 import logging
 import logging.handlers
@@ -12,10 +13,10 @@ REMOTE = "/usr/local/movies/remote/"
 #chs = ["41243", "41238", "41218"] 
 
 # vss 2 -> 10.49.34.68 (41232, 41233, 41234, 41235, 41236, 41237, 41238, 41239, 41240, 41241, 41242, 41243)
-#chs = ["41238", "41234", "41233", "41232"]
+#chs = ["41238", "41234", "41233"]
 
 # vss 3 -> 10.49.34.69 (41226, 41227, 41228, 41229, 41230, 41231, 41232, 41233, 41234, 41235, 41236, 41237)
-#chs = ["41234", "41233", "41232", "41230"]
+#chs = ["41234", "41233", "41230"]
 
 # vss 4 -> 10.49.34.70 (41220, 41221, 41222, 41223, 41224, 41225, 41226, 41227, 41228, 41229, 41230, 41231)
 #chs = ["41223", "41222", "41230"] 
@@ -45,10 +46,6 @@ if __name__ == "__main__":
                                 continue
                         else:
                                 logger.info ("push %s" % f)
-                                #shutil.copy (f, PUSHD)
-
-        # move from pushd to /usr/local/movies
-        pullmedia = glob.glob ("%s*" % PUSHD)
-        for f in pullmedia:
-                shutil.move (f, LOCAL)
+                                shutil.copy (f, PUSHD)
+                                os.system ("mv %s%s %s" % (PUSHD, f[25:], LOCAL))
 

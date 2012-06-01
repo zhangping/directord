@@ -201,12 +201,8 @@ if __name__ == '__main__':
                                         # have pulled to pulld, wait move to local
                                         continue
                                 shutil.copy (realf, PULLD)
+                                os.system ("mv %s%s %s" % (PULLD, realf[25:], LOCAL))
                                 logger.info("pull %s" % realf)
-
-                # move from pulld to /usr/local/movies
-                pullmedia = glob.glob ("%s*" % PULLD)
-                for f in pullmedia:
-                        shutil.move (f, LOCAL)
 
         ######### remove tv program too older and VOD that is unpopular
         media = glob.glob ("/usr/local/movies/?????t*")
