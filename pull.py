@@ -200,7 +200,15 @@ if __name__ == '__main__':
                                 if glob.glob ("%s%s" % (PULLD, (realf[25:]))):
                                         # have pulled to pulld, wait move to local
                                         continue
-                                shutil.copy (realf, PULLD)
+                                r = open (realf,  'r')
+                                w = open ("%s%s" % (PULLD, realf[25:]), 'w')
+                                b = r.read (2*1024*1024)
+                                while not (b  == ""): # 2M
+                                        w.write (b)
+                                        time.sleep (0.1)
+                                        b = r.read (2*1024*1024)
+                                r.close ()
+                                w.close ()
                                 os.system ("mv %s%s %s" % (PULLD, realf[25:], LOCAL))
                                 logger.info("pull %s" % realf)
 
