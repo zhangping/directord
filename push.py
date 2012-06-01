@@ -4,6 +4,7 @@ import glob
 import logging
 import logging.handlers
 import shutil
+import time
 
 LOCAL = "/usr/local/movies/"
 PUSHD = "/usr/local/movies/pushd/"
@@ -46,6 +47,14 @@ if __name__ == "__main__":
                                 continue
                         else:
                                 logger.info ("push %s" % f)
-                                shutil.copy (f, PUSHD)
+                                r = open (f,  'r')
+                                w = open ("%s%s" % (PUSHD, f[25:]), 'w')
+                                b = r.read (2*1024*1024)
+                                while not (b  == ""): # 2M
+                                        w.write (b)
+                                        time.sleep (0.1)
+                                        b = r.read (2*1024*1024)
+                                r.close ()
+                                w.close ()
                                 os.system ("mv %s%s %s" % (PUSHD, f[25:], LOCAL))
 
