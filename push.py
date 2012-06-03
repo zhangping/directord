@@ -39,7 +39,7 @@ if __name__ == "__main__":
         logger = GetLogger ()
         for c in chs:
                 #recorde file pattern 41224t1205281040.ts
-                p = "%s%st??????????.ts" % (REMOTE, c)
+                p = "%s%st??????????.*" % (REMOTE, c)
                 fs = glob.glob (p)
                 for f in fs:
                         if glob.glob ("%s%s" % (LOCAL, (f[25:]))):
@@ -49,11 +49,11 @@ if __name__ == "__main__":
                                 logger.info ("push %s" % f)
                                 r = open (f,  'r')
                                 w = open ("%s%s" % (PUSHD, f[25:]), 'w')
-                                b = r.read (2*1024*1024)
+                                b = r.read (1024*1024)
                                 while not (b  == ""): # 2M
                                         w.write (b)
-                                        time.sleep (0.1)
-                                        b = r.read (2*1024*1024)
+                                        time.sleep (0.05)
+                                        b = r.read (1024*1024)
                                 r.close ()
                                 w.close ()
                                 os.system ("mv %s%s %s" % (PUSHD, f[25:], LOCAL))

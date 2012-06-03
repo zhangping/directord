@@ -202,11 +202,11 @@ if __name__ == '__main__':
                                         continue
                                 r = open (realf,  'r')
                                 w = open ("%s%s" % (PULLD, realf[25:]), 'w')
-                                b = r.read (2*1024*1024)
+                                b = r.read (1024*1024)
                                 while not (b  == ""): # 2M
                                         w.write (b)
-                                        time.sleep (0.1)
-                                        b = r.read (2*1024*1024)
+                                        time.sleep (0.05)
+                                        b = r.read (1024*1024)
                                 r.close ()
                                 w.close ()
                                 os.system ("mv %s%s %s" % (PULLD, realf[25:], LOCAL))
