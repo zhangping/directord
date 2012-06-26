@@ -1,5 +1,6 @@
 
 import os
+import sys
 import glob
 import logging
 import logging.handlers
@@ -37,6 +38,12 @@ def GetLogger():
 
 if __name__ == "__main__":
         logger = GetLogger ()
+        if os.path.exists("/var/run/push"):
+                logger.info("A push instance is working, exit...")
+                sys.exit(0)
+        else:
+                logger.info("Start pushing...")
+                os.system("touch /var/run/push")
         for c in chs:
                 #recorde file pattern 41224t1205281040.ts
                 p = "%s%st??????????.*" % (REMOTE, c)
@@ -66,3 +73,4 @@ if __name__ == "__main__":
                                 w.close ()
                                 os.system ("mv %s%s %s" % (PUSHD, f[25:], LOCAL))
 
+        os.system("rm /var/run/push")
