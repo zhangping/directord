@@ -50,10 +50,18 @@ if __name__ == "__main__":
                                 r = open (f,  'r')
                                 w = open ("%s%s" % (PUSHD, f[25:]), 'w')
                                 b = r.read (1024*1024)
-                                while not (b  == ""): # 2M
+                                while not (b == ""): # 2M
                                         w.write (b)
+                                        w.flush()
                                         time.sleep (0.05)
                                         b = r.read (1024*1024)
+                                        if (b == ""): # push a file be coping into storage? reopen and read more.
+                                                time.sleep(5)
+                                                logger.info("read 0, reopen and seek to %d" % w.tell())
+                                                r.close()
+                                                r = open(f, 'r')
+                                                r.seek(w.tell())
+                                                b = r.read(1024*1024)
                                 r.close ()
                                 w.close ()
                                 os.system ("mv %s%s %s" % (PUSHD, f[25:], LOCAL))
